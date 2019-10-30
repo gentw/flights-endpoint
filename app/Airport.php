@@ -3,16 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Flight;
 
 
 class Airport extends Model
 {
+    
     public function arrivingFlights() {
-    	return $this->hasMany('Flight', 'arrivalAirport_id')
+        return $this->hasMany('App\Flight', 'arrivalAirport_id');
     }
-
     public function departingFlights() {
-    	return $this->hasMany('Flight', 'departureAirport_id');
+        return $this->hasMany('App\Flight', 'departureAirport_id');
     }
 }

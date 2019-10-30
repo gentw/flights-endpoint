@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Airport;
-use App\Customer;
+
 
 class Flight extends Model
 {
@@ -17,6 +17,6 @@ class Flight extends Model
     }
 
     public function passengers() {
-    	return $this->belongsToMany('Customer', 'flight_customer');
+    	return $this->belongsToMany('App\Customer', 'flight_customer');
     }
 }
