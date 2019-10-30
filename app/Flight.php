@@ -3,20 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Airport;
-
 
 class Flight extends Model
 {
     public function arrivalAirport() {
-    	return $this->belongsTo('Airport', 'arrivalAirport_id');
+        return $this->belongsTo('App\Airport', 'arrivalAirport_id');
     }
 
     public function departureAirport() {
-    	return $this->belongsTo('Airport', 'departureAirport_id');
+        return $this->belongsTo('App\Airport', 'depatureAirport_id');
     }
 
     public function passengers() {
-    	return $this->belongsToMany('App\Customer', 'flight_customer');
+        return $this->belongsToMany('App\Customer', 'flight_customer');
     }
 }
