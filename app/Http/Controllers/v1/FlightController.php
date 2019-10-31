@@ -22,7 +22,9 @@ class FlightController extends Controller
      */
     public function index()
     {
-        $data = $this->flights->getFlights();
+        $params = request()->input();
+
+        $data = $this->flights->getFlights($params);
         return response()->json($data);
     }
 
