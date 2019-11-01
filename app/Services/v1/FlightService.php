@@ -13,26 +13,29 @@ class FlightService {
 		'departureAirport' 	=> 'departure'
  	];
 
+ 	protected $clauseProperties = [
+        'status',
+        'flightNumber'
+    ];
+
 	public function getFlights($params) {
 		//return Flight::all();
 		if(empty($params)) {
 			return $this->filterFlights(Flight::all());
 		}
 
-		$withKeys = [];
+		$withKeys = $this->getWithKeys($params);
+		$whereClauses = $this->getWhereClause($params);
 
-		if(isset($params['include'])) {
-			$includeParams = explode(',', $params['include']);
-			$includes = array_intersect($this->supportedIncludes, $includeParams);
-			$withKeys = array_keys($includes);
-		}
+		$flights = Flight::with($withKeys)->where($whereClauses)->get();
 
-		return $this->filterFlights(Flight::with($withKeys)->get(), $withKeys);
+		return $this->filterFlights($flights, $withKeys);
+		//return $this->filterFlights(Flight::with($withKeys)->get(), $withKeys);
 	}
 
-	public function getFlight($flightNumber) {
-		return $this->filterFlights(Flight::where('flightNumber', $flightNumber)->get());
-	}
+	// public function getFlight($flightNumber) {
+	// 	return $this->filterFlights(Flight::where('flightNumber', $flightNumber)->get());
+	// }
 
 	protected function filterFlights($flights, $keys = []) {
 		$data = [];
@@ -68,5 +71,28 @@ class FlightService {
 		return $data;		
 	}
 
+	protected function getWithKeys($params) {
+		$withKeys = [];
+
+		if(isset($params['include'])) {
+			$includeParams = explode(',', $params['include']);
+			$includes = array_intersect($this->supportedIncludes, $includeParams);
+			$withKeys = array_keys($includes);
+		}
+
+		return $withKeys;
+	}
+
+	protected function getWhereClause($params) {
+		$clause = [];
+
+		foreach($this->clauseProperties as $prop) {
+			if(in_array($prop, array_keys($params))) {
+				$clause[$prop] = $params[$prop];
+			}
+		}
+
+		return $clause;
+	}
 }
 
