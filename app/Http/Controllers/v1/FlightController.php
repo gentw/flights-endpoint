@@ -28,6 +28,7 @@ class FlightController extends Controller
         return response()->json($data);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -46,7 +47,12 @@ class FlightController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $flight = $this->flights->createFlight($request);
+            return response()->json($flight, 201);
+        } catch(Exception $e) {
+            response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     /**
