@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\v1;
 
+use Validator;
 
 use App\Flight;
 use App\Airport;
@@ -19,8 +20,23 @@ class FlightService {
         'flightNumber'
     ];
 
+    protected $rules = [
+        'flightNumber' 			=> 'required',
+        'status' 				=> 'required',
+        'arrival.datetime' 		=> 'required|date',
+        'arrival.iataCode' 		=> 'required',
+        'departure.datetime'	=> 'required|date',
+        'departure.iataCode' 	=> 'required',
+    ];
+
+    public function validate($flight) {
+        $validator = Validator::make($flight, $this->rules);
+        $validator->validate();
+    }
+
 	public function getFlights($params) {
 		//return Flight::all();
+
 		if(empty($params)) {
 			return $this->filterFlights(Flight::all());
 		}
