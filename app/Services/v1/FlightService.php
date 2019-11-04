@@ -22,7 +22,7 @@ class FlightService {
 
     protected $rules = [
         'flightNumber' 			=> 'required',
-        'status' 				=> 'required',
+        'status' 				=> 'required|flightstatus',
         'arrival.datetime' 		=> 'required|date',
         'arrival.iataCode' 		=> 'required',
         'departure.datetime'	=> 'required|date',
